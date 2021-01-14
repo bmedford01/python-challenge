@@ -32,15 +32,13 @@ with open(csvpath) as csvfile:
         change = int(profits[row]) - int(profits[row - 1])
         difference.append(change)
     total = sum(float(row[1]) for row in data)
-    maximum = max(float(row[1]) for row in data)
-    minimum = min(float(row[1]) for row in data)
-    for (a,b) in zip(months, profits):
+    maximum = max(int(i) for i in difference)
+    minimum = min(int(i) for i in difference)
+    for (a,b) in zip(months[1:], difference):
         if float(b) == minimum:
             minmonth = (a)
-            mindecrease = (b)
-        if float (b) == maximum:
+        if float(b) == maximum:
             maxmonth = (a)
-            maxincrease = (b)
 averagechange = round(sum(difference)/len(difference),2)
 
         
@@ -49,6 +47,16 @@ print('Financial Analaysis\n-------------')
 print(f'Total Months: {month}')
 print(f'Total: ${total}')
 print(f'Average Change: ${averagechange}')
-print('Greatest Increase in Profits: ' + str(maxmonth) + ' ($' + str(maxincrease) + ')')
-print('Greatest Decrease in Profits: ' + str(minmonth) + ' ($' + str(mindecrease) + ')')
-print(change)
+print(f'Greatest Increase in Profits: {maxmonth} (${maximum})')
+print(f'Greatest Decrease in Profits: {minmonth} (${minimum})')
+
+# Create text file with results
+f = open('Analysis/PyBank_Analysis.txt', 'w')
+f.write('Financial Analysis\n-------------\n')
+f.write(f'Total Months: {month}\n')
+f.write(f'Total: ${total}\n')
+f.write(f'Average Change: ${averagechange}\n')
+f.write(f'Greatest Increase in Profits: {maxmonth} (${maximum})\n')
+f.write(f'Greatest Decrease in Profits: {minmonth} (${minimum})')
+f.close()
+
